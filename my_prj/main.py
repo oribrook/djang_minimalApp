@@ -1,5 +1,5 @@
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "my_project.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "my_prj.settings")
 
 
 import django

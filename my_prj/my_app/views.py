@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import (api_view,
                              authentication_classes,
                              permission_classes)
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -27,4 +27,11 @@ def signup(request):
 @authentication_classes([BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def private(request):
+    return Response(f"This is a private response. user is: {request.user.username}")
+
+
+@api_view(['GET'])
+@authentication_classes([BasicAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def token_private(request):
     return Response(f"This is a private response. user is: {request.user.username}")
