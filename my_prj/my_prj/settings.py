@@ -128,8 +128,14 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-   "http://127.0.0.1:3000",  # react local host
+   "http://127.0.0.1:3000",  #  local host
    "http://localhost:3000",
-   # "file:///C:/Users/ybruk/Desktop/ori/html/to_django/index.html",  # not works
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOW_HEADERS = [
+#     "some-header",
+#     "Content-Type",
+#     "authorization",
+# ]
+
+# CORS_ALLOW_ALL_ORIGINS = True

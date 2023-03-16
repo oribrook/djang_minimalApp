@@ -10,5 +10,7 @@ django.setup()
 
 
 # from my_app.models import *
-
+from django.contrib.auth.models import User
+users = User.objects.all()
+[print(u.username) for u in users]
 # ...

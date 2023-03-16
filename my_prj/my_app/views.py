@@ -8,8 +8,9 @@ from rest_framework.authentication import BasicAuthentication, TokenAuthenticati
 from rest_framework.permissions import IsAuthenticated
 
 
+@api_view(["GET", "POST"])
 def home(request):
-    return HttpResponse("<h1> Welcome to Django minimal APP </h1>")
+    return Response("Welcome to Django minimal APP")
 
 
 @api_view(['POST'])
@@ -30,7 +31,7 @@ def private(request):
     return Response(f"This is a private response. user is: {request.user.username}")
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 @authentication_classes([BasicAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def token_private(request):
