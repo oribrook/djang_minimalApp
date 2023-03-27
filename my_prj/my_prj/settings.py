@@ -38,9 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'my_app',
+    'corsheaders',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+ 
 ]
 
 ROOT_URLCONF = 'my_prj.urls'
@@ -69,6 +73,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'my_prj.wsgi.application'
+
+CORS_ALLOWED_ORIGINS = [
+   # "some_url_of_allowed_domains",
+   "http://127.0.0.1:3001", # react local host
+   "http://localhost:3001",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3001'
+]
+
+CORS_ALLOW_HEADERS = [
+    "some-header",
+    "content-Type",
+    "Accept",
+]
+
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Database
