@@ -10,17 +10,17 @@ STATIC_PATH = str(settings.BASE_DIR) + r"\\my_app\\static\\"
 
 
 def home(request):
-    return HttpResponse("<h1> Welcome to Django minimal APP </h1>")
+    return HttpResponse("<h1> Welcome to Django minimal APP for loading File </h1>")
 
 
 @api_view(['POST'])
 def save_file(request):
+        
+    new_file_name = request.data.get("file").name
     
-    print(request.data)
 
-    new_file_name = f"my_file.PNG"    
     with open(STATIC_PATH + new_file_name, 'wb+') as f:
-        for chunk in request.data.get("img").chunks():
+        for chunk in request.data.get("file").chunks():
             f.write(chunk)
 
     return Response("File uploaded!")
