@@ -1,3 +1,4 @@
 /my_prj/db.sqlite3
 *__pycache__*
 .idea/
+my_prj/my_app/static/*
