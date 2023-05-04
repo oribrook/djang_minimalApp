@@ -28,7 +28,7 @@ def serve_notes_pagination(request):
 
     # notes = Note.objects.all()[start, end-1] # bad!
     # notes = Note.objects.filter(id__range=[start, end-1])  # ok
-    notes = Note.objects.order_by("id")[start:end]  # good!
+    notes = Note.objects.filter()[start:end]  # good!
 
     notes_data = NoteSerializer(notes, many=True).data    
     
