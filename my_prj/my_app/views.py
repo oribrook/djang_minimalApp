@@ -35,4 +35,5 @@ def private(request):
 @authentication_classes([BasicAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def token_private(request):
-    return Response(f"This is a private response. user is: {request.user.username}")
+    return Response({"msg": f"Token is valid.",
+                     'user': request.user.username})
