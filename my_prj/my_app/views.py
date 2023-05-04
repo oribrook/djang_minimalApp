@@ -13,7 +13,7 @@ def home(request):
 
 @api_view(['GET'])
 def serve_notes(request):
-    notes = Note.objects.all()[:40]
+    notes = Note.objects.all()
     notes_data = NoteSerializer(notes, many=True).data
     return Response(notes_data)
 
@@ -23,15 +23,17 @@ def serve_notes_pagination(request):
     page_size = int(request.GET.get("page_size", 20))
     page = int(request.GET.get("page_num", 0))
 
-    start = page * page_size
-    end = start + page_size
+    start = page * page_size 
+    end = start + page_size  
 
-    notes = Note.objects.filter(id__range=[start, end-1])
+    # notes = Note.objects.all()[start, end-1] # bad!
+    # notes = Note.objects.filter(id__range=[start, end-1])  # ok
+    notes = Note.objects.order_by("id")[start:end]  # good!
 
-    notes_data = NoteSerializer(notes, many=True).data
-    res = {'data': notes_data,
-           'next_page': page + 1, # convention 
-            'has_more'  :  end <= len(notes)
+    notes_data = NoteSerializer(notes, many=True).data    
+    
+    res = {'data': notes_data,           
+           'has_more'  :  end <= Note.objects.count()
            }
 
     return Response(res)
