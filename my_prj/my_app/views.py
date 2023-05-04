@@ -26,7 +26,7 @@ def serve_notes_pagination(request):
     start = page * page_size
     end = start + page_size
 
-    notes = Note.objects.all()[start:end]  # todo: get only the needed ones.
+    notes = Note.objects.filter(id__range=[start, end-1])
 
     notes_data = NoteSerializer(notes, many=True).data
     res = {'data': notes_data,
