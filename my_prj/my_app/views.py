@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import (api_view,
                              authentication_classes,
@@ -21,7 +22,10 @@ def signup(request):
 
     user = User.objects.create_user(username=username, password=password, email=email)
 
-    return Response(f"new user created. id: {user.id}")
+    token = Token.objects.create(user=user)
+    token = token.key
+
+    return Response({'msg': f"new user created. id: {user.id}", 'token': token})
 
 
 @api_view(['GET'])
