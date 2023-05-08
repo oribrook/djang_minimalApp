@@ -34,6 +34,6 @@ def private(request):
 @api_view(['GET', 'POST'])
 @authentication_classes([BasicAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def token_private(request):
+def check_token(request):
     return Response({"msg": f"Token is valid.",
                      'user': request.user.username})

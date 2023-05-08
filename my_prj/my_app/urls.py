@@ -7,5 +7,5 @@ urlpatterns = [
     path('signup', views.signup),
     path('private', views.private),
     path('obtain-token', obtain_auth_token),
-    path('check-token', views.token_private),
+    path('check-token', views.check_token),
 ]

@@ -1,3 +1,5 @@
 /my_prj/db.sqlite3
 *__pycache__*
 .idea/
+ttd.*
+.vscode*
