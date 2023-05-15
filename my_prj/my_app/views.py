@@ -16,16 +16,23 @@ def home(request):
 
 @api_view(['POST'])
 def signup(request):
-    username = request.data.get("username")
-    password = request.data.get("password")
-    email = request.data.get("email", None)
+    try:
+        username = request.data.get("username")
+        password = request.data.get("password")
+        email = request.data.get("email", None)
 
-    user = User.objects.create_user(username=username, password=password, email=email)
+        user = User.objects.create_user(username=username, password=password, email=email)
 
-    token = Token.objects.create(user=user)
-    token = token.key
+        token = Token.objects.create(user=user)
+        token = token.key
+    
+        return Response({'msg': f"new user created. id: {user.id}", 'token': token})
+    
+    except Exception as e:
+        print("\n\n***Error:", e, "\n\n")
+        return Response("Server error.", 500)
 
-    return Response({'msg': f"new user created. id: {user.id}", 'token': token})
+        
 
 
 @api_view(['GET'])
