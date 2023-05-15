@@ -150,3 +150,10 @@ LOGGING = {
       },
   },
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': f'{BASE_DIR}/django_cache',
+    }
+}
