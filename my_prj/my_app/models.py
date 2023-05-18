@@ -13,5 +13,4 @@ class Note(models.Model):
 
     title = models.CharField(max_length=20, null=False, blank=False)
     content = models.CharField(max_length=200, null=False, blank=False)
-    status = models.CharField(choices=Status.choices,  default=Status.wait, max_length=10)
-    user = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
+    status = models.CharField(choices=Status.choices,  default=Status.wait, max_length=10)    
