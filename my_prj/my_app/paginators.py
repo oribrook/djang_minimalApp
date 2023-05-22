@@ -7,9 +7,10 @@ from my_app.serializers import NoteSerializer
 
 class MyPagination(pgn.PageNumberPagination):
    page_size = 10
-   page_query_param = "page_num"
    max_page_size = 100
-
+   page_query_param = "page_num"
+   page_size_query_param = "page_size"
+   
 
 class NotePagination(generics.ListAPIView):
    queryset = Note.objects.all()
