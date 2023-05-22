@@ -6,6 +6,7 @@ from my_app.serializers import NoteSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 
 
 def home(request):
@@ -17,6 +18,7 @@ def home(request):
     """)
 
 
+# no cache!
 @api_view(['GET'])
 def serve_notes(request):
     notes = Note.objects.all()
@@ -24,8 +26,17 @@ def serve_notes(request):
     return Response(notes_data)
 
 
+# view cache
+@cache_page(60 * 15, key_prefix="test_")  # 15 minutes
 @api_view(['GET'])
-def serve_notes_cached(request):
+def serve_notes_view_cache(request):        
+    notes = Note.objects.all()
+    notes_data = NoteSerializer(notes, many=True).data
+    return Response(notes_data)
+
+
+@api_view(['GET'])
+def serve_notes_cached_manually(request):
         
     cache_notes = cache.get("notes")
     if cache_notes:
