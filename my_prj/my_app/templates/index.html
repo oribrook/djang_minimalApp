@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title> {{ title }}</title>
+    
+    <!-- import static (style.css) -->
+    <link rel="stylesheet" href="static/style.css">
+    
+    <!-- or by {load static..} -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    
+    <!-- import static JS -->
+    <script src="{% static 'helpers.js' %}"> </script>
+
+    <!-- import static2 JS -->
+    <script src="{% static 'js2.js' %}"> </script>        
+
+</head>
+<body>
+    <h2> {{ content }} </h2>
+
+    {% for item in some_list %}
+    <p> {{ item }}</p>
+    {% endfor %}
+
+    <!-- using helpers.js:alert_hi function  -->
+    <button onclick="alert_hi()"> say hi </button>
+
+    <!-- using js2.js:alert_hi function from static2  -->
+    <button onclick="alert_hi2()"> say hi2 </button>
+
+    <!-- using static image file from static/images/2.jpg --> <br/>
+    <img src="{% static 'images/2.jpg' %}"/>
+
+    <!-- using naming url --> <br/>
+    <a href="{% url 'home' %}"> link to home </a>
+
+    <!-- link by name with parameters --> <br/>
+    <a href="{% url 'param' 'some string' %}"> link with param </a>
+
+</body>
+</html>
