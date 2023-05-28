@@ -71,7 +71,7 @@ class MyConsumer(WebsocketConsumer):
              'event_type': event['event_type']}))
         
 
-    def disconnect(self):
+    def disconnect(self, code):
         """ This will be run when a user disconnected """
 
         msg = f"user {self.user_name} disconnected"
