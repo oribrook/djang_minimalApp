@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  
+    <title>Logicode Chat</title>
+
+    <script>
+    //   let socketClient = undefined;
+
+      function send() {
+        dataElem = document.getElementById("input_id");
+        const data = dataElem.value;
+        socketClient.send(JSON.stringify({ message: data }));
+        dataElem.value = "";
+      }
+
+      function start() {
+        room = document.querySelector("#room_id").value;
+        name = document.getElementById("name_id").value;
+        const url = `ws://${window.location.host}/ws?room=${room}&user=${name}`;
+        if (name.length < 2) {
+          alert("Enter valid name");
+          return;
+        }
+
+        socketClient = new WebSocket(url);
+
+        socketClient.onmessage = async (e) => {
+          data = await JSON.parse(e.data);
+          rootElem = document.getElementById("root");
+          newElem = document.createElement("p");
+          newElem.innerText = data.message;
+
+          if (data.event_type == "info") {
+            newElem.style.backgroundColor = "yellow";
+          }
+
+          rootElem.appendChild(newElem);
+        };
+
+        // socketClient.onopen = () => {
+        //   data = `user: ${name} entered`;
+        //   socketClient.send(JSON.stringify({ message: data }));
+        // };
+
+        document.querySelector("#chat_id").style.visibility = "visible";
+        document.querySelector("#init_id").style.visibility = "hidden";
+      }
+
+      function check_enter(e) {
+        if (e.keyCode == 13) {
+          send();
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="init_id">
+      <h2>Welcome to Logicode-chat.</h2>
+
+      <h4>Enter your name and room number, then press start</h4>
+
+      <input id="name_id" placeholder="your name" /> <br />
+      <input id="room_id" placeholder="chat room" />
+
+      <button onclick="start()">Start Chat</button>
+    </div>
+
+    <div id="chat_id" style="visibility: hidden">
+      <h2>Welcome to Logicode Chat</h2>
+
+      <input id="input_id" onkeyup="check_enter(event)" />
+      <button onclick="send()">Send</button>
+      <div id="root"></div>
+    </div>
+  </body>
+</html>

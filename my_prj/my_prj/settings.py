@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'my_app',
 ]
+
+ASGI_APPLICATION = 'my_prj.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        # in production, change it to redis (InMem no cross-process messaging is possible)
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
