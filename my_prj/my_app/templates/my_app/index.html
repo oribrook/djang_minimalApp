@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <script>
+      function connect() {
+        const url = `ws://${window.location.host}/ws`;
+        wsClient = new WebSocket(url);
+
+        wsClient.onmessage = (event) =>  {
+            data = JSON.parse(event.data);
+            alert(data['message'])
+        }
+      }
+
+      function send() {
+        const data = "Message Example. This written by the client"
+        wsClient.send(JSON.stringify({ message: data }));        
+      }
+    </script>
+  </head>
+  <body>
+    <h3>Welcome to Logicode Web-Socket</h3>
+
+    <button onclick="connect()">Connect to WS</button> <br/>
+    <button onclick="send()">Send example message </button>
+  </body>
+</html>

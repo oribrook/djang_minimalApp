@@ -3,6 +3,6 @@ from django.http import HttpResponse
 
 
 def home(request):
-    return HttpResponse("<h1> Welcome to Django minimal APP </h1>")
+    return render(request=request, template_name='my_app/index.html')
 
 
