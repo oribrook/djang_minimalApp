@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'my_prj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'carbnb.db',
     }
 }
 
@@ -122,3 +122,23 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': False,
+
+
+  'handlers': {
+      'console': {
+          'level': 'DEBUG',
+          'class': 'logging.StreamHandler',
+      },
+  },
+  'loggers': {
+      'django.db.backends': {
+          'handlers': ['console'],
+          'level': 'DEBUG',
+          'propagate': True,
+      },
+  },
+}
