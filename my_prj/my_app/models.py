@@ -17,8 +17,9 @@ class Car(models.Model):
     owner = models.ForeignKey("Person", on_delete=models.RESTRICT, 
         related_name="p_cars")
 
+
     def __str__(self):
-        return self.car_type
+        return f"{self.car_type} - {self.year}"
     
 
 class Rent(models.Model):

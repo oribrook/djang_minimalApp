@@ -38,7 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'my_app',
+    'crispy_bootstrap5',
+    'crispy_forms',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,22 +129,22 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGGING = {
-  'version': 1,
-  'disable_existing_loggers': False,
+# LOGGING = {
+#   'version': 1,
+#   'disable_existing_loggers': False,
 
 
-  'handlers': {
-      'console': {
-          'level': 'DEBUG',
-          'class': 'logging.StreamHandler',
-      },
-  },
-  'loggers': {
-      'django.db.backends': {
-          'handlers': ['console'],
-          'level': 'DEBUG',
-          'propagate': True,
-      },
-  },
-}
+#   'handlers': {
+#       'console': {
+#           'level': 'DEBUG',
+#           'class': 'logging.StreamHandler',
+#       },
+#   },
+#   'loggers': {
+#       'django.db.backends': {
+#           'handlers': ['console'],
+#           'level': 'DEBUG',
+#           'propagate': True,
+#       },
+#   },
+# }

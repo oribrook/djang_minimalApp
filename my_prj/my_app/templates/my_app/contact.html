@@ -1,0 +1,17 @@
+{% extends 'my_app/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %} 
+
+<h4> Search for a car </h4>
+
+<form method="POST" action="{% url 'contact' %}">
+    {% csrf_token %}        
+        
+    {{ form | crispy }}
+
+    <input type="submit" value="שלח">
+</form>
+
+{% endblock %}
