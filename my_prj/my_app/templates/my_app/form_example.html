@@ -1,0 +1,20 @@
+{% load static %}
+<html>
+<head>
+    <title>Form</title>
+</head>
+<body>
+    <form action="{% url 'form' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}    
+
+        <input type="submit" value="Send">
+    </form>
+    
+
+
+</body>
+</html>
+
+
+ 
