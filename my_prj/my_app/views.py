@@ -8,7 +8,7 @@ def home(request):
 <h3> You can test the app by opening it from few different browser tabs. </h3> <br/>
 <h4> powered by Logicode </h4>
 <br/>
-<a href='http://127.0.0.1:8000/chat'> Connect to our chat </a>
+<a href='/chat'> Connect to our chat </a>
 """)
 
 
