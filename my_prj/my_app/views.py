@@ -1,17 +1,62 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.http import require_http_methods
 from django.urls import reverse
-
 from django.views import View
 from .models import Car
 from django.db.transaction import atomic
-from .forms import ContactForm
+from .forms import ContactForm, CarForm
+from django.conf import settings
 
 
-def serve_contact(request):
+@require_http_methods(["GET", "POST"])
+def add_car(request):
     if request.method == 'GET':
-        return render(request=request, template_name='my_app/contact.html',
-                    context={'form': ContactForm(initial={'car_type': 'Suzuki'})})
+
+        return render(request=request, template_name="my_app/form.html",
+                    context={'form': CarForm, 
+                             'head_message': 'הוספת מכונית',
+                             'url': reverse('add_car')})
+
+    # else (post):
+
+    form = CarForm(request.POST)
+    if not form.is_valid():
+        return render(request=request, template_name="my_app/form.html",
+                    context={'form': form, 
+                             'head_message': 'הוספת מכונית - טפל בשגיאות',
+                             'url': reverse('add_car')})
+    else:
+        form.save()
+        return render(request=request, template_name='my_app/base.html',        
+                    context= {'message': 'הטופס התקבל בהצלחה'})
+
+
+class ContactView(View):    
+    def get(self, request):
+        return render(request=request, template_name='my_app/form.html',
+                    context={'form': ContactForm(initial={'car_type': 'Suzuki'}),
+                             'url': reverse('contact'),
+                             'head_message': 'צור קשר'})
+    
+    def post(self, request):
+        form = ContactForm(data=request.POST)        
+        if not form.is_valid():
+            return render(request=request, template_name='my_app/form.html',
+                    context={'form': form,
+                             'url': reverse('contact'),
+                             'head_message': 'צור קשר - טפל בשגיאות'})
+
+        # save file if exists
+        if request.FILES.get('img', False):
+            f = request.FILES['img']
+            path = str(settings.BASE_DIR) + fr"\my_app\assets\{f.name}"        
+            with open(path, 'wb') as FH:
+                for chunk in f.chunks():
+                    FH.write(chunk)        
+
+        return render(request=request, template_name='my_app/base.html',        
+                    context= {'message': 'הטופס התקבל בהצלחה'})
 
 
 def search_car(request):

@@ -1,38 +1,42 @@
 from django import forms
 from .models import Car
+from django.core.validators import (RegexValidator, 
+                                    EmailValidator,
+                                    URLValidator,
+                                    MaxValueValidator,
+                                    )
+
+from django.core.exceptions import ValidationError
+
+
+class CarForm(forms.ModelForm):
+    year = forms.IntegerField(validators=[MaxValueValidator(limit_value=2024)])
+    email = forms.EmailField(required=False, label='הודעת אישור תגיע למייל במידה ותציין')
+    class Meta:        
+        model = Car
+        fields = '__all__'
+        # exclude = ['owner']
 
 
 class DatePicker(forms.TextInput):
     input_type = 'date'
     
 
+def my_validator(number):    
+    if number % 2 != 0:
+        raise ValidationError('Number is not even')
+
+
 class ContactForm(forms.Form):
-
-    car_type = forms.CharField(required=False, 
-            widget=forms.TextInput(attrs={'style': 'color: red;'}))
-
-    date3 = forms.CharField(
-        widget=forms.TextInput(attrs={'type': 'date'}))
-
-    min_cost = forms.FloatField(min_value=0, required=False, 
-        widget=forms.NumberInput(attrs={'class': 'myclass'}))
-
-
-    max_cost = forms.FloatField(min_value=0, required=False)
-    first_hand = forms.BooleanField(required=False)
-    terms = forms.BooleanField(required=True, label="האם אתה מסכים לתנאי השירות")
-
+    img = forms.FileField(required=False)        
+    name = forms.CharField(validators=[RegexValidator("[a-zA-Z ]"),])
+    number = forms.IntegerField(validators=[my_validator], required=False)    
     city = forms.ChoiceField(choices=[
         ('jer', 'ירושלים'),
         ('tlv', 'תל אביב'),
         ('bs', 'באר שבע'),
-    ], initial='tlv')
+    ], initial='tlv')    
+    date = forms.DateField(widget=DatePicker(), required=False)
+    car = forms.ModelChoiceField(queryset=Car.objects.all(), required=False)
 
-    car = forms.ModelChoiceField(queryset=Car.objects.all())
-
-    date = forms.DateField(widget=forms.SelectDateWidget(years=range(1900, 2040)))
-    date1 = forms.DateField(widget=forms.SelectDateWidget(years=[1,2,3]))
-    date2 = forms.DateField(widget=DatePicker())
-
-
-    lname = forms.CharField(widget=forms.Textarea(attrs={'rows': "3"}))
+    error_css_class = 'my_error_class'

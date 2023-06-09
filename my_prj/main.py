@@ -7,25 +7,19 @@ django.setup()
 
 
 from my_app.models import Car, Person
-
+from django.db.transaction import atomic
 from django.db import connection
 
-with connection.cursor() as curser:
 
-    query = "select car_type from my_app_car where car_type like %s"
-    curser.execute(query, ['Toyota'])
-    # res = curser.fetchmany(5)
-    # for item in curser:
-    #     print(item)
-    # first = curser.fetchone()
-    # second = curser.fetchone()
+if False:
+    with connection.cursor() as curser:
 
-    # print(first)
-    # print(second)
-    print(curser.fetchone())
-    print(res)
+        query = "select car_type from my_app_car where car_type like %s"
+        curser.execute(query, ['Toyota'])    
+        print(curser.fetchone())
+        print(res)
 
-exit()
+    exit()
     
 
 
@@ -49,8 +43,6 @@ exit()
 #     Car.objects.create(car_type=l[1], cost=int(l[6]), year=int(l[2]), owner=p)
 
 
-from django.db.transaction import atomic
-
 
 # try:
 #     with atomic():    
@@ -62,11 +54,11 @@ from django.db.transaction import atomic
 #     # return Ht
 #     pass
 
-
-cars = Car.objects.all()
-print(cars[0])
-print(cars[1])
-# for c in cars:
-#     print(c.car_type)
+if False:
+    cars = Car.objects.all()
+    print(cars[0])
+    print(cars[1])
+    # for c in cars:
+    #     print(c.car_type)
 
 
