@@ -5,14 +5,28 @@
 
 {% block content %}
 
+{% if to_edit %}
+<h3> Users Cars </h3>
+{% else %}
 <h3> Cars of Car-B&B </h3>
+{% endif %}
+
 {% for car in cars %}
 
 <div onclick="window.location.href='{% url "car" car.id %}'" 
     style="background-color: rgb(203, 229, 203);">
     
-    <p> {{car.car_type}}  - {{ car.cost }} </p>    
-    
+
+{% if to_edit %}
+    <a href="{% url 'edit_car' car.id %}">
+{% endif %}
+
+    <p> {{car.car_type}}  - {{ car.cost }} </p>
+
+{% if to_edit %}
+</a>
+{% endif %}
+
 </div>
 
 {% endfor %}

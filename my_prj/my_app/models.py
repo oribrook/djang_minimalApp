@@ -5,7 +5,7 @@ class Person(models.Model):
     person_id = models.CharField(max_length=9, unique=True)
     name = models.CharField(max_length=20)
     address = models.CharField(max_length=20, null=True, blank=True)    
-
+    cars_rented = models.ManyToManyField(to='Car', through='Rent', related_name='renters')
     def __str__(self):
         return self.name 
 
@@ -16,7 +16,6 @@ class Car(models.Model):
     year = models.PositiveIntegerField()
     owner = models.ForeignKey("Person", on_delete=models.RESTRICT, 
         related_name="p_cars")
-
 
     def __str__(self):
         return f"{self.car_type} - {self.year}"

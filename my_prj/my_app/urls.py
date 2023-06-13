@@ -7,5 +7,8 @@ urlpatterns = [
     path('car/<int:id>', views.car, name='car'),
     path('car/search', views.search_car, name='search_car'),
     path('contact_as', views.ContactView.as_view(), name='contact'),
-    path('car/add', views.add_car, name='add_car'),    
+    path('car/add', views.add_car, name='add_car'),
+    path('car/edit/<int:id_>', views.edit_car, name='edit_car'),
+    path('user_cars', views.user_cars, name='user_cars'),
+    path('test', views.CarCreateView.as_view(), name='test'),
 ]

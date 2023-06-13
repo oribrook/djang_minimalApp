@@ -10,9 +10,13 @@ from django.core.exceptions import ValidationError
 
 
 class CarForm(forms.ModelForm):
-    year = forms.IntegerField(validators=[MaxValueValidator(limit_value=2024)])
-    email = forms.EmailField(required=False, label='הודעת אישור תגיע למייל במידה ותציין')
-    class Meta:        
+    year = forms.IntegerField(validators=[MaxValueValidator(limit_value=2024, message="Year error")])
+
+    def __init__(self, is_year_editable=True, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['year'].disabled = not is_year_editable
+
+    class Meta:
         model = Car
         fields = '__all__'
         # exclude = ['owner']
