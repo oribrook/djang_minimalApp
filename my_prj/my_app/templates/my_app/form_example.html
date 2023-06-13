@@ -2,11 +2,24 @@
 <html>
 <head>
     <title>Form</title>
+    <style>
+        .errorlist  {
+            background-color: yellow;
+        }
+        .myclass {
+            background-color: green;
+        }
+
+    </style>
 </head>
 <body>
     <form action="{% url 'form' %}" method="POST">
         {% csrf_token %}
         {{ form.as_p }}    
+
+        {% if form.name.errors %}
+            <p> You must specify a valid value for name </p>
+        {% endif %}
 
         <input type="submit" value="Send">
     </form>
@@ -15,6 +28,5 @@
 
 </body>
 </html>
-
 
  
