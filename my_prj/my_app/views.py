@@ -1,3 +1,4 @@
+import IPython
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
@@ -5,10 +6,67 @@ from django.urls import reverse
 from django.views import View
 from .models import Car
 from django.db.transaction import atomic
-from .forms import ContactForm, CarForm
+from .forms import ContactForm, CarForm, LoginForm
 from django.conf import settings
 from django.views.generic.list import ListView
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
+import IPython
+
+def private(request):
+
+    if request.user.is_authenticated:
+        return render(request=request, template_name='my_app/base.html',
+                      context={'message': 'זהו מידע חסוי'})
+
+    return render(request=request, template_name='my_app/base.html',
+                      context={'message': 'אין לך הרשאה כי אתה לא מחובר. התחבר תחילה'})
+
+
+
+@require_http_methods(["GET", "POST"])
+def carbnb_login(request):
+    if request.method == 'GET':
+        return render(request=request, template_name="my_app/form.html",
+                      context={
+                          'form': LoginForm,
+                          'url': reverse("login"),
+                      })
+
+    username = request.POST.get('username', None)
+    password = request.POST.get('password', None)
+    user = authenticate(request, username=username, password=password)
+
+    if user:
+        login(request, user)
+        return render(request=request, template_name='my_app/base.html',
+                      context={'message': 'התחברת בהצלחה'})
+
+    return render(request=request, template_name="my_app/form.html",
+                  context={
+                      'form': LoginForm,
+                      'url': reverse("login"),
+                      'message': 'ההתחברות נכשלה נסה שנית',
+                  })
+
+@require_http_methods(["GET", "POST"])
+def carbnb_signup(request):
+    if request.method == 'GET':
+        return render(request=request, template_name='my_app/form.html',
+                      context={'url': reverse('signup'),
+                               'form': UserCreationForm()})
+
+    form = UserCreationForm(request.POST)
+    if not form.is_valid():
+        return render(request=request, template_name='my_app/form.html',
+                      context={'url': reverse('signup'),
+                               'form': form})
+    # else
+    user = form.save()
+    login(request=request, user=user)
+    return render(request=request, template_name='my_app/base.html',
+                  context={'message': 'ברוך הבא לאתר שלנו'})
 
 
 class CarCreateView(CreateView):

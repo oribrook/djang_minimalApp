@@ -11,4 +11,7 @@ urlpatterns = [
     path('car/edit/<int:id_>', views.edit_car, name='edit_car'),
     path('user_cars', views.user_cars, name='user_cars'),
     path('test', views.CarCreateView.as_view(), name='test'),
+    path('user/signup', views.carbnb_signup, name='signup'),
+    path('user/login', views.carbnb_login, name='login'),
+    path('private', views.private, name='private'),
 ]
