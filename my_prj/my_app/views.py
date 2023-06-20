@@ -4,25 +4,26 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from django.views import View
-from .models import Car
+from .models import Car, Person
 from django.db.transaction import atomic
-from .forms import ContactForm, CarForm, LoginForm
+from .forms import (ContactForm, CarForm, LoginForm, MyUserCreationForm,
+                    MyUserUpdateForm)
 from django.conf import settings
 from django.views.generic.list import ListView
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import  login_required
 import IPython
 
 def private(request):
 
     if request.user.is_authenticated:
         return render(request=request, template_name='my_app/base.html',
-                      context={'message': 'זהו מידע חסוי'})
+                      context={'message': ' זהו מידע חסוי שנגיש לך כי אתה מחובר'})
 
     return render(request=request, template_name='my_app/base.html',
                       context={'message': 'אין לך הרשאה כי אתה לא מחובר. התחבר תחילה'})
-
 
 
 @require_http_methods(["GET", "POST"])
@@ -55,16 +56,24 @@ def carbnb_signup(request):
     if request.method == 'GET':
         return render(request=request, template_name='my_app/form.html',
                       context={'url': reverse('signup'),
-                               'form': UserCreationForm()})
+                            #    'form': UserCreationForm()
+                               'form': MyUserCreationForm()
+                               })
 
-    form = UserCreationForm(request.POST)
+    # form = UserCreationForm(request.POST)
+    form = MyUserCreationForm(request.POST)
     if not form.is_valid():
         return render(request=request, template_name='my_app/form.html',
                       context={'url': reverse('signup'),
                                'form': form})
-    # else
+    # else (form valid)
     user = form.save()
     login(request=request, user=user)
+    Person.objects.create(name=user.username, 
+                          address=form.cleaned_data['address'],
+                          user=user,
+                          person_id=form.cleaned_data['person_id'])
+    
     return render(request=request, template_name='my_app/base.html',
                   context={'message': 'ברוך הבא לאתר שלנו'})
 
@@ -93,7 +102,7 @@ class CarListView(ListView):
 def edit_car(request, id_):
     car = get_object_or_404(Car, id=id_)
 
-    form = CarForm(instance=car, is_year_editable=True)
+    form = CarForm(instance=car)
     form.fields['car_type'].disabled = True
     if request.method == 'GET':
         return render(request=request, template_name='my_app/form.html',
@@ -204,11 +213,37 @@ def car(request, id):
     return render(request=request, template_name="my_app/car.html",
                 context={'car': car})
 
+@login_required
 @require_http_methods(["GET", ])
 def user_cars(request):
-    user_id = 1
-    cars = Car.objects.filter(owner=user_id)
+
+    person = Person.objects.get(user=request.user)
+    cars = Car.objects.filter(owner=person)
 
     return render(request=request, template_name='my_app/cars_list.html',
                   context={'cars': cars, 'to_edit': True})
 
+
+def carbnb_logout(request):    
+    if request.user.is_authenticated:
+        logout(request)
+    return redirect('home')
+
+
+@login_required
+def update_user_info(request):
+    form = MyUserUpdateForm(instance=request.user)
+    # del form.fields['password1']
+    # del form.fields['password2']
+    if request.method == 'GET':
+        return render(request=request, template_name='my_app/form.html',
+                        context={'form': form,
+                                 'url': reverse('update_user')})
+    
+    if request.method == 'POST':
+        form = MyUserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+        
+        return render(request=request, template_name='my_app/base.html',        
+                    context= {'message': 'הנתונים התעדכנו'})

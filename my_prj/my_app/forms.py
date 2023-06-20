@@ -7,6 +7,8 @@ from django.core.validators import (RegexValidator,
                                     )
 
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.models import User
 
 
 class CarForm(forms.ModelForm):
@@ -61,3 +63,36 @@ class ContactForm(forms.Form):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=20)
     password = forms.CharField(max_length=20, widget=forms.PasswordInput)
+
+
+class MyUserCreationForm(UserCreationForm):
+
+    address = forms.CharField(max_length=40)
+    person_id = forms.CharField(max_length=9, label="מספר זהות")
+
+    class Meta:
+        model = User
+        fields = ['username', 'person_id','address']
+
+    # def save():
+    #     super...
+    #     create Person object
+
+
+class MyUserUpdateForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        # fields = ['username', 'person_id','address']
+        fields = ['username']
+
+
+    def __init__(self, *args, edit=False, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        del self.fields['password1']
+        del self.fields['password2']
+
+    # def save(self,  *args, **kwargs):
+    #     print("hi")
+    #     super().save()
