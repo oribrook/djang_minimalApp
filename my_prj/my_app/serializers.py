@@ -25,8 +25,7 @@ class ArticleSerializer(serializers.Serializer):
         #                        content=content,
         #                        published=published)
     
-        na = Article.objects.create(**validated_data)        
-        return na
+        return Article.objects.create(**validated_data)                
     
     
     def update(self, instance, validated_data):
