@@ -9,6 +9,15 @@ class Article(models.Model):
     title = models.CharField(max_length=50)
     content = models.CharField(max_length=500)
     published = models.DateField(default=timezone.now, editable=True)
-
+    site = models.ForeignKey(to="Site", on_delete=models.RESTRICT)
+    
     def __str__(self):
         return f"{self.title} - {self.published}"
+    
+
+class Site(models.Model):
+    name = models.CharField(max_length=20)
+    url = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.name

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Article
+from .models import Article, Site
 
 # just example
 def serialize_article(artic):
@@ -35,3 +35,37 @@ class ArticleSerializer(serializers.Serializer):
         instance.published = validated_data.get('published', instance.published)
         instance.save()
         return instance
+
+
+class ArticleMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ("title",)
+
+
+class SiteSerializer(serializers.ModelSerializer):
+    
+    article_set = ArticleMiniSerializer(many=True)
+
+    class Meta:
+        model = Site
+        fields = "__all__"                
+
+
+class SiteMiniSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Site        
+        fields = ("name",)
+        
+
+class ArticleModelSerializer(serializers.ModelSerializer):
+    
+    site_id = serializers.IntegerField()
+    site = SiteMiniSerializer(read_only=True)
+
+    class Meta:
+        model = Article
+        fields = "__all__"
+   
+        
