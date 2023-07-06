@@ -15,6 +15,10 @@ class SiteViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
 
+    def list(self, *args, **kwargs):
+        print("About to run list")
+        return super().list(*args, **kwargs)
+
 
 def home(request):
     return HttpResponse("<h1> Welcome to Django minimal APP </h1>")
