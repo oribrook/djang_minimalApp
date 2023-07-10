@@ -2,7 +2,7 @@ asgiref==3.6.0
 asttokens==2.2.1
 backcall==0.2.0
 decorator==5.1.1
-Django==4.1.7
+Django
 djangorestframework==3.14.0
 executing==1.2.0
 ipython==8.14.0
