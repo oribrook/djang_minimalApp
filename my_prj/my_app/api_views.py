@@ -1,9 +1,39 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import viewsets
 from .models import Article, Site
 from .serializers import serialize_article, SiteSerializer
 from .serializers import ArticleModelSerializer as ArticleSerializer
 from rest_framework import status
+from rest_framework import filters
+from rest_framework.permissions import IsAuthenticated
+
+
+# ViewSet
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'content']
+
+    def create(self, *args, **kwargs):
+        
+        print("I can do herer things ")
+        # if len(list(Site.objects.filter(site_id==self.request.data.get("site")))) > 50:
+        #     return Response("Can't have more than 50 aritlces per site")
+        return super().create(*args, **kwargs)
+    
+    def retrieve(self, *args, **kwargs):
+        print("\n\nhi\n\n")
+        return super().retrieve(*args, **kwargs)
+    
+    # def list(selkf ..)  # get
+    # def retrieve(selkf ..)  # get by id
+    # def update(self..)  # put
+    # def partial_update(self..)  # patch
+    # def destroy() # delete
+
 
 
 @api_view(['GET', 'POST', 'PUT'])
@@ -14,7 +44,7 @@ def test_drf(request):
     return Response(res.data)        
 
 
-@api_view(['GET', 'POST', 'PUT'])
+@api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def serve_article(request):
         
     if request.method == 'GET':
@@ -35,13 +65,13 @@ def serve_article(request):
             return Response({'info': "Article added successfully",
                              'id': new_artic.id})
         else:
-            return Response({'error': artic_ser.errors})
+            return Response({'error': artic_ser.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     if request.method == 'PUT':
         id_ = request.query_params.get("id", False)
 
         if not id_ :
-            return Response({'error': 'you must specify id'})
+            return Response({'error': 'you must specify id'}, status=status.HTTP_400_BAD_REQUEST)
 
         artic = Article.objects.get(pk=id_)
         artic_ser = ArticleSerializer(instance=artic, data=request.data)
@@ -50,6 +80,31 @@ def serve_article(request):
             return Response({'info': "Article updated successfully"})
         else:
             return Response({'error': artic_ser.errors})
+        
+    if request.method == 'PATCH':
+        id_ = request.query_params.get("id", False)
+
+        if not id_ :
+            return Response({'error': 'you must specify id'}, status=status.HTTP_400_BAD_REQUEST)
+
+        artic = Article.objects.get(pk=id_)
+        artic_ser = ArticleSerializer(instance=artic, data=request.data, partial=True)
+        if artic_ser.is_valid():
+            artic_ser.save()
+            return Response({'info': "Article updated successfully"})
+        else:
+            return Response({'error': artic_ser.errors})
+        
+    if request.method == 'DELETE':
+        id_ = request.query_params.get("id", False)
+
+        if not id_ :
+            return Response({'error': 'you must specify id'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        artic = Article.objects.get(pk=id_)
+        artic.delete()
+        
+        return Response({'info': "Article deleted successfully"})        
         
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])

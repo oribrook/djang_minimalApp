@@ -8,7 +8,7 @@ class Article(models.Model):
 
     title = models.CharField(max_length=50)
     content = models.CharField(max_length=500)
-    published = models.DateField(default=timezone.now, editable=True)
+    # published = models.DateField(default=timezone.now, editable=True)
     site = models.ForeignKey(to="Site", on_delete=models.RESTRICT)
     
     def __str__(self):

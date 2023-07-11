@@ -61,8 +61,8 @@ class SiteMiniSerializer(serializers.ModelSerializer):
 
 class ArticleModelSerializer(serializers.ModelSerializer):
     
-    site_id = serializers.IntegerField()
-    site = SiteMiniSerializer(read_only=True)
+    # site_id = serializers.IntegerField()
+    # site = SiteMiniSerializer(read_only=True)
 
     class Meta:
         model = Article
