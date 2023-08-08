@@ -9,4 +9,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.home, name='home'),
     path('file', views.save_file, name='file'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('files', views.save_files, name='files'),
+] 
+# + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
