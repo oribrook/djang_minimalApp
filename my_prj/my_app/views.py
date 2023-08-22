@@ -33,7 +33,8 @@ def serve_notes_pagination(request):
     notes_data = NoteSerializer(notes, many=True).data    
     
     res = {'data': notes_data,           
-           'has_more'  :  end <= Note.objects.count()
+           'has_more'  :  end <= Note.objects.count(),
+           'total': Note.objects.count(),
            }
 
     return Response(res)
