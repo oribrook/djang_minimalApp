@@ -12,7 +12,7 @@ router.register('notes-auth', views.NotesViewSet)
 urlpatterns = [
     path('', views.home),    
     path('signup', views.signup),
-    path('notes_pagination', views.serve_notes_pagination),    
+    path('public-notes', views.serve_notes_pagination),    
     path('obtain-token', obtain_auth_token),
     path('', include(router.urls)),
     path('check-token', views.check_token),
