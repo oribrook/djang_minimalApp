@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'my_app',
     'rest_framework',
     'corsheaders',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -131,22 +132,22 @@ CORS_ALLOWED_ORIGINS = [
    "http://localhost:3000",
 ]
 
-LOGGING = {
-  'version': 1,
-  'disable_existing_loggers': False,
+# LOGGING = {
+#   'version': 1,
+#   'disable_existing_loggers': False,
 
 
-  'handlers': {
-      'console': {
-          'level': 'DEBUG',
-          'class': 'logging.StreamHandler',
-      },
-  },
-  'loggers': {
-      'django.db.backends': {
-          'handlers': ['console'],
-          'level': 'DEBUG',
-          'propagate': True,
-      },
-  },
-}
+#   'handlers': {
+#       'console': {
+#           'level': 'DEBUG',
+#           'class': 'logging.StreamHandler',
+#       },
+#   },
+#   'loggers': {
+#       'django.db.backends': {
+#           'handlers': ['console'],
+#           'level': 'DEBUG',
+#           'propagate': True,
+#       },
+#   },
+# }

@@ -14,7 +14,8 @@ class MyPagination(pgn.PageNumberPagination):
    # http://127.0.0.1:8000/notes_pagination2?page_num=X&page_size=X
    
 
-class NotePagination(generics.ListAPIView):
-   queryset = Note.objects.all()
-   serializer_class = NoteSerializer
-   pagination_class = MyPagination
+
+# class NotePagination(generics.ListAPIView):
+#    queryset = Note.objects.all()
+#    serializer_class = NoteSerializer
+#    pagination_class = MyPagination

@@ -1,9 +1,20 @@
-from django.urls import path
-from . import views, paginators
+from django.urls import path, include
+from . import views
+
+from rest_framework.authtoken.views import obtain_auth_token
+
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('notes-auth', views.NotesViewSet)
+
 
 urlpatterns = [
-    path('', views.home),
-    path('notes', views.serve_notes),
-    path('notes_pagination', views.serve_notes_pagination),
-    path('notes_pagination2', paginators.NotePagination.as_view()),
+    path('', views.home),    
+    path('signup', views.signup),
+    path('notes_pagination', views.serve_notes_pagination),    
+    path('obtain-token', obtain_auth_token),
+    path('', include(router.urls)),
+    path('check-token', views.check_token),
+
 ]
