@@ -30,3 +30,21 @@ def serve_room_participants(req, group):
     participants = channel_layer.groups.get(group, "")
 
     return HttpResponse(str(list(participants)))
+
+
+def send_to_rooms(req):
+    from channels.layers import get_channel_layer    
+    from asgiref.sync import async_to_sync
+
+    room = req.GET.get("room", "room_global")
+    msg = req.GET.get("msg", "example message by view")
+
+    channel_layer = get_channel_layer()
+        
+    async_to_sync(channel_layer.group_send)(room, {
+           'type': 'global.handler',
+           'message': msg,
+           'event_type': 'routine',
+        })
+    
+    return HttpResponse(str(list(channel_layer.groups.keys())))
