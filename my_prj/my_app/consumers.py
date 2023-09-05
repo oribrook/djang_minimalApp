@@ -2,6 +2,7 @@ import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 
+# from .models import Note
 
 class MyConsumer(WebsocketConsumer):
 
@@ -62,6 +63,9 @@ class MyConsumer(WebsocketConsumer):
                 }
             )
 
+        # save to db
+        # ob = Note.objects.create(title=self.user_name, content=msg)        
+        # ob.save()
 
     def global_handler(self, event):
         """ This function will be run by each channel """
