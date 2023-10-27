@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'my_app',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AWS_ACCESS_KEY_ID = '<YOUR-KEY>'
+AWS_SECRET_ACCESS_KEY = '<YOUR-SECRET>'
+AWS_STORAGE_BUCKET_NAME = 'django-test-bucket'
+AWS_S3_REGION_NAME = 'us-east-1'
+AWS_DEFAULT_ACL = 'public-read'  # Optional: Set the default ACL for files
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+     )
+ }
